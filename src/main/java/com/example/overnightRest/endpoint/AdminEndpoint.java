@@ -27,36 +27,36 @@ public class AdminEndpoint {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponseDto> getProductById(@PathVariable("id") int id) {
-        Optional<Category> byId = categoryService.findById(id);
-        if (byId.isEmpty()) {role
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(categoryMapper.map(byId.get()));
-    }
-
-    @PostMapping()
-    public ResponseEntity<?> createProduct(@RequestBody CreateCategoryDto createCategoryDto) {
-        categoryService.save(createCategoryDto);
-        return ResponseEntity.ok(createCategoryDto);
-    }
-
-    @PutMapping()
-    public ResponseEntity<?> updateProduct(@RequestBody UpdateCategoryDto updateCategoryDto) {
-        if (updateCategoryDto.getId() == 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        categoryService.update(updateCategoryDto);
-        return ResponseEntity.ok(updateCategoryDto);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") int id) {
-        if (id == 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        categoryService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<CategoryResponseDto> getProductById(@PathVariable("id") int id) {
+//        Optional<Category> byId = categoryService.findById(id);
+//        if (byId.isEmpty()) {role
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(categoryMapper.map(byId.get()));
+//    }
+//
+//    @PostMapping()
+//    public ResponseEntity<?> createProduct(@RequestBody CreateCategoryDto createCategoryDto) {
+//        categoryService.save(createCategoryDto);
+//        return ResponseEntity.ok(createCategoryDto);
+//    }
+//
+//    @PutMapping()
+//    public ResponseEntity<?> updateProduct(@RequestBody UpdateCategoryDto updateCategoryDto) {
+//        if (updateCategoryDto.getId() == 0) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        categoryService.update(updateCategoryDto);
+//        return ResponseEntity.ok(updateCategoryDto);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> deleteById(@PathVariable("id") int id) {
+//        if (id == 0) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        categoryService.deleteById(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }
