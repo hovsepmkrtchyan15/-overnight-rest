@@ -1,4 +1,4 @@
-package com.example.overnightRest.dto.adminDto;
+package com.example.overnightRest.dto;
 
 import com.example.common.entity.StatusSeller;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SellerResponseDto {
+public class UserResponseDto {
 
     private int id;
     private String name;
