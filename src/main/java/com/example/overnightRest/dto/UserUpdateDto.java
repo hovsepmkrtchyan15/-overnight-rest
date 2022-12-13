@@ -1,6 +1,5 @@
 package com.example.overnightRest.dto;
 
-import com.example.common.entity.StatusSeller;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserStatusDto {
+public class UserUpdateDto {
+
     private int id;
-    private StatusSeller status;
+    private String name;
+    private String surname;
+    private String email;
+    private String pic_url;
+
 
 }

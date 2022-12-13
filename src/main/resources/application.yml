@@ -4,6 +4,18 @@ spring:
     username: root
     password: root
 
+  mail:
+    host: smtp.gmail.com
+    username: poxospoxosyan1985@gmail.com
+    password: tiqhyxcvmeiqiohe
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
   port: 8081
 
