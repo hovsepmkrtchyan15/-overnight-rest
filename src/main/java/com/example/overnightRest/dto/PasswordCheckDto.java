@@ -1,17 +1,20 @@
 package com.example.overnightRest.dto;
 
-import com.example.common.entity.StatusSeller;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserStatusDto {
-    private int id;
-    private StatusSeller status;
+@Component
+public class PasswordCheckDto {
+
+    private String oldPassword;
+    private String newPassword;
+    private String confirmPassword;
 
 }
