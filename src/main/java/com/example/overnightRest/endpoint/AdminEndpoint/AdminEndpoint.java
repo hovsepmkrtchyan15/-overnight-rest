@@ -1,12 +1,15 @@
 package com.example.overnightRest.endpoint.AdminEndpoint;
 
+import com.example.common.dto.PasswordCheckDto;
+import com.example.common.dto.ProductFilterDto;
+import com.example.common.dto.UserStatusDto;
+import com.example.common.dto.UserUpdateDto;
+import com.example.common.entity.Product;
 import com.example.common.entity.RoleUser;
 import com.example.common.entity.User;
-import com.example.overnightRest.dto.PasswordCheckDto;
-import com.example.overnightRest.dto.UserStatusDto;
-import com.example.overnightRest.dto.UserUpdateDto;
 import com.example.overnightRest.mapper.UserMapper;
 import com.example.overnightRest.security.CurrentUser;
+import com.example.overnightRest.service.SellerService;
 import com.example.overnightRest.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,8 +32,8 @@ public class AdminEndpoint {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    
     private final UserMapper userMapper;
+    private final SellerService sellerService;
 
     @GetMapping("/users")
     public ResponseEntity<Page<User>> adminPage(@PageableDefault(size = 20) Pageable pageable,
@@ -38,6 +42,13 @@ public class AdminEndpoint {
         Page<User> users = userService.findUsersByUserRole(role, pageable);
         return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> sellerProducts(@RequestBody ProductFilterDto productFilterDto) {
+        List<Product> products = sellerService.findProductsByFilter(productFilterDto);
+        return ResponseEntity.ok(products);
+    }
+
 
     @PutMapping("/update/seller")
     public ResponseEntity<?> updateSeller(@RequestBody UserStatusDto userStatusDto) {

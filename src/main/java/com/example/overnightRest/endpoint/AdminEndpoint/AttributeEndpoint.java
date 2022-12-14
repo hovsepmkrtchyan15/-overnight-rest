@@ -1,16 +1,11 @@
 package com.example.overnightRest.endpoint.AdminEndpoint;
 
 import com.example.common.entity.Attribute;
-import com.example.common.entity.Region;
-import com.example.overnightRest.dto.AttributeCreateDto;
-import com.example.overnightRest.dto.AttributeDto;
-import com.example.overnightRest.dto.RegionCreateDto;
-import com.example.overnightRest.dto.RegionDto;
+import com.example.common.dto.AttributeCreateDto;
+import com.example.common.dto.AttributeDto;
 import com.example.overnightRest.mapper.AttributeMapper;
-import com.example.overnightRest.mapper.RegionMapper;
 import com.example.overnightRest.security.CurrentUser;
 import com.example.overnightRest.service.AttributeService;
-import com.example.overnightRest.service.RegionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

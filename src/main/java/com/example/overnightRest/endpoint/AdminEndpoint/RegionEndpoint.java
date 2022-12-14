@@ -1,8 +1,8 @@
 package com.example.overnightRest.endpoint.AdminEndpoint;
 
 import com.example.common.entity.Region;
-import com.example.overnightRest.dto.RegionCreateDto;
-import com.example.overnightRest.dto.RegionDto;
+import com.example.common.dto.RegionCreateDto;
+import com.example.common.dto.RegionDto;
 import com.example.overnightRest.mapper.RegionMapper;
 import com.example.overnightRest.security.CurrentUser;
 import com.example.overnightRest.service.RegionService;

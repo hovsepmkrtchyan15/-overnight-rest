@@ -1,10 +1,10 @@
 package com.example.overnightRest.endpoint;
 
 import com.example.common.entity.User;
-import com.example.overnightRest.dto.UserAuthDto;
-import com.example.overnightRest.dto.UserAuthResponseDto;
-import com.example.overnightRest.dto.UserRegisterDto;
-import com.example.overnightRest.dto.UserResponseDto;
+import com.example.common.dto.UserAuthDto;
+import com.example.common.dto.UserAuthResponseDto;
+import com.example.common.dto.UserRegisterDto;
+import com.example.common.dto.UserResponseDto;
 import com.example.overnightRest.mapper.RegisterUserMapper;
 import com.example.overnightRest.mapper.UserMapper;
 import com.example.overnightRest.service.UserService;
@@ -36,12 +36,11 @@ public class LoginRegisterEndpoint {
     @PostMapping("/login")
     public ResponseEntity<?> auth(@RequestBody UserAuthDto userAuthDto) {
         Optional<User> byEmail = userService.findByAuthEmail(userAuthDto);
-        User user = byEmail.get();
         if (byEmail.isPresent()) {
-            if (passwordEncoder.matches(userAuthDto.getPassword(), user.getPassword())) {
+            if (passwordEncoder.matches(userAuthDto.getPassword(), byEmail.get().getPassword())) {
                 return ResponseEntity.ok(UserAuthResponseDto.builder()
-                        .token(jwtTokenUtil.generateToken(user.getEmail()))
-                        .user(userMapper.map(user))
+                        .token(jwtTokenUtil.generateToken(byEmail.get().getEmail()))
+                        .user(userMapper.map(byEmail.get()))
                         .build());
             }
         }

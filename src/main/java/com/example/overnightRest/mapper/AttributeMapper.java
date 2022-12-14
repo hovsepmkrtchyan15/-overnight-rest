@@ -2,11 +2,8 @@ package com.example.overnightRest.mapper;
 
 
 import com.example.common.entity.Attribute;
-import com.example.common.entity.Region;
-import com.example.overnightRest.dto.AttributeCreateDto;
-import com.example.overnightRest.dto.AttributeDto;
-import com.example.overnightRest.dto.RegionCreateDto;
-import com.example.overnightRest.dto.RegionDto;
+import com.example.common.dto.AttributeCreateDto;
+import com.example.common.dto.AttributeDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;
