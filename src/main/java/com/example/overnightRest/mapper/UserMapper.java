@@ -2,12 +2,11 @@ package com.example.overnightRest.mapper;
 
 
 import com.example.common.entity.User;
-import com.example.overnightRest.dto.UserResponseDto;
-import com.example.overnightRest.dto.UserRoleDto;
-import com.example.overnightRest.dto.UserStatusDto;
-import com.example.overnightRest.dto.UserUpdateDto;
+import com.example.common.dto.UserResponseDto;
+import com.example.common.dto.UserRoleDto;
+import com.example.common.dto.UserStatusDto;
+import com.example.common.dto.UserUpdateDto;
 import org.mapstruct.Mapper;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

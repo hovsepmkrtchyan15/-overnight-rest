@@ -1,6 +1,5 @@
 package com.example.overnightRest;
 
-import com.example.overnightRest.dto.PasswordCheckDto;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
