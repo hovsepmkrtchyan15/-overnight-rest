@@ -3,6 +3,7 @@ package com.example.overnightRest.endpoint.SellerEndpoint;
 import com.example.common.dto.ProductCreateDto;
 import com.example.common.dto.ProductDto;
 import com.example.common.entity.Product;
+import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.mapper.ProductMapper;
 import com.example.overnightRest.security.CurrentUser;
 import com.example.overnightRest.service.SellerService;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -37,7 +39,7 @@ public class ProductEndpoint {
     }
 
     @PostMapping("/product/add")
-    public ResponseEntity<?> createProduct(@RequestBody ProductCreateDto productCreateDto) {
+    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductCreateDto productCreateDto) {
         Optional<Product> byName = sellerService.findByName(productCreateDto.getName());
         if (byName.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -47,7 +49,7 @@ public class ProductEndpoint {
     }
 
     @PutMapping("/update/product")
-    public ResponseEntity<?> updateProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity<?> updateProduct(@RequestBody @Valid ProductDto productDto) {
         if (productDto.getId() == 0) {
             return ResponseEntity.badRequest().build();
         }
@@ -58,7 +60,7 @@ public class ProductEndpoint {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteById(@PathVariable("id") int id,
-                                        @AuthenticationPrincipal CurrentUser currentUser) {
+                                        @AuthenticationPrincipal CurrentUser currentUser) throws EntityNotFoundException {
         if (id == 0) {
             return ResponseEntity.badRequest().build();
         }

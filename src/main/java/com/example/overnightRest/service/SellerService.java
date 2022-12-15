@@ -5,6 +5,7 @@ import com.example.common.dto.ProductFilterDto;
 import com.example.common.entity.Product;
 import com.example.common.repository.CustomProductRepository;
 import com.example.common.repository.ProductRepository;
+import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,10 +40,10 @@ public class SellerService {
         productRepository.save(map);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws EntityNotFoundException {
         Optional<Product> byId = productRepository.findById(id);
         if (byId.isEmpty()) {
-            throw new NullPointerException();
+            throw new EntityNotFoundException("Product whit id = " + id + " does not exists");
         }
         productRepository.deleteById(id);
     }

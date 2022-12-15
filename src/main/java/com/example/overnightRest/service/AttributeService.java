@@ -5,6 +5,7 @@ import com.example.common.entity.Attribute;
 import com.example.common.entity.Region;
 import com.example.common.repository.AttributeRepository;
 import com.example.common.repository.RegionRepository;
+import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.mapper.AttributeMapper;
 import com.example.overnightRest.mapper.RegionMapper;
 import lombok.RequiredArgsConstructor;
@@ -37,18 +38,18 @@ public class AttributeService {
         attributeRepository.save(attribute);
     }
 
-    public void update(Attribute attribute) {
+    public void update(Attribute attribute) throws EntityNotFoundException {
         Optional<Attribute> byId = attributeRepository.findById(attribute.getId());
         if (byId.isEmpty()) {
-            throw new NullPointerException();
+            throw new EntityNotFoundException("Attribute whit id = " + attribute.getId()+ " does not exists");
         }
         attributeRepository.save(attribute);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws EntityNotFoundException {
         Optional<Attribute> byId = attributeRepository.findById(id);
         if(byId.isEmpty()){
-            throw new NullPointerException();
+            throw new EntityNotFoundException("Attribute whit id = " + id+ " does not exists");
         }
         attributeRepository.deleteById(id);
     }

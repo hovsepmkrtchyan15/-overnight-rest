@@ -3,6 +3,7 @@ package com.example.overnightRest.endpoint.AdminEndpoint;
 import com.example.common.entity.Region;
 import com.example.common.dto.RegionCreateDto;
 import com.example.common.dto.RegionDto;
+import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.mapper.RegionMapper;
 import com.example.overnightRest.security.CurrentUser;
 import com.example.overnightRest.service.RegionService;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +45,7 @@ public class RegionEndpoint {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> createRegion(@RequestBody RegionCreateDto regionCreateDto) {
+    public ResponseEntity<?> createRegion(@Valid @RequestBody RegionCreateDto regionCreateDto) {
         Optional<Region> byName = regionService.findByName(regionCreateDto.getName());
         if (byName.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -52,7 +55,7 @@ public class RegionEndpoint {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateRegion(@RequestBody RegionDto regionDto) {
+    public ResponseEntity<?> updateRegion(@Valid @RequestBody RegionDto regionDto) throws EntityNotFoundException {
         if (regionDto.getId() == 0) {
             return ResponseEntity.badRequest().build();
         }
@@ -62,7 +65,7 @@ public class RegionEndpoint {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteById(@PathVariable("id") int id,
-                                        @AuthenticationPrincipal CurrentUser currentUser) {
+                                        @AuthenticationPrincipal CurrentUser currentUser) throws EntityNotFoundException {
         if (id == 0) {
             return ResponseEntity.badRequest().build();
         }
