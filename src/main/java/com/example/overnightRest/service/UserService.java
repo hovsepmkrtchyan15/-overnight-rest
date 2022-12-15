@@ -6,6 +6,7 @@ import com.example.common.entity.StatusSeller;
 import com.example.common.entity.User;
 import com.example.common.repository.UserRepository;
 import com.example.common.dto.UserAuthDto;
+import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,10 +42,10 @@ public class UserService {
         return userRepository.findUserByRole(role, pageable);
     }
 
-    public void update(User user) {
+    public void update(User user) throws EntityNotFoundException {
         Optional<User> byId = userRepository.findById(user.getId());
         if (byId.isEmpty()) {
-            throw new NullPointerException();
+            throw new EntityNotFoundException("User whit id = " + user.getId()+ " does not exists");
         }
         byId.get().setStatus(user.getStatus());
         userRepository.save(byId.get());
@@ -63,7 +64,11 @@ public class UserService {
 
     }
 
-    public Optional<User> getUserById(int id) {
-        return userRepository.findById(id);
+    public Optional<User> getUserById(int id) throws EntityNotFoundException {
+        Optional<User> byId = userRepository.findById(id);
+        if(byId.isEmpty()){
+            throw new EntityNotFoundException("User whit id = " + id + " does not exists");
+        }
+        return byId;
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +35,7 @@ public class LoginRegisterEndpoint {
     private final RegisterUserMapper registerUserMapper;
 
     @PostMapping("/login")
-    public ResponseEntity<?> auth(@RequestBody UserAuthDto userAuthDto) {
+    public ResponseEntity<?> auth(@Valid @RequestBody UserAuthDto userAuthDto) {
         Optional<User> byEmail = userService.findByAuthEmail(userAuthDto);
         if (byEmail.isPresent()) {
             if (passwordEncoder.matches(userAuthDto.getPassword(), byEmail.get().getPassword())) {
@@ -48,7 +49,7 @@ public class LoginRegisterEndpoint {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDto> register(@RequestBody UserRegisterDto userRegisterDto) {
+    public ResponseEntity<UserResponseDto> register(@Valid @RequestBody UserRegisterDto userRegisterDto) {
         Optional<User> byEmail = userService.findByEmail(userRegisterDto.getEmail());
         if (byEmail.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

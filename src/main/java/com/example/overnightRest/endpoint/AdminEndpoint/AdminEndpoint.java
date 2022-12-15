@@ -7,6 +7,7 @@ import com.example.common.dto.UserUpdateDto;
 import com.example.common.entity.Product;
 import com.example.common.entity.RoleUser;
 import com.example.common.entity.User;
+import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.mapper.UserMapper;
 import com.example.overnightRest.security.CurrentUser;
 import com.example.overnightRest.service.SellerService;
@@ -21,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,21 +39,21 @@ public class AdminEndpoint {
 
     @GetMapping("/users")
     public ResponseEntity<Page<User>> adminPage(@PageableDefault(size = 20) Pageable pageable,
-                                                @RequestParam("RoleUser") RoleUser role) {
+                                                @Valid @RequestParam("RoleUser") RoleUser role) {
 
         Page<User> users = userService.findUsersByUserRole(role, pageable);
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> sellerProducts(@RequestBody ProductFilterDto productFilterDto) {
+    public ResponseEntity<List<Product>> sellerProducts(@Valid @RequestBody ProductFilterDto productFilterDto) {
         List<Product> products = sellerService.findProductsByFilter(productFilterDto);
         return ResponseEntity.ok(products);
     }
 
 
     @PutMapping("/update/seller")
-    public ResponseEntity<?> updateSeller(@RequestBody UserStatusDto userStatusDto) {
+    public ResponseEntity<?> updateSeller(@Valid @RequestBody UserStatusDto userStatusDto) throws EntityNotFoundException {
         if (userStatusDto.getId() == 0) {
             return ResponseEntity.badRequest().build();
         }
@@ -61,7 +63,7 @@ public class AdminEndpoint {
     }
 
     @PostMapping("/password/change")
-    public ResponseEntity<?> changePassword(@RequestBody PasswordCheckDto passwordCheckDto,
+    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordCheckDto passwordCheckDto,
                                             @AuthenticationPrincipal CurrentUser currentUser) {
         Optional<User> userByEmail = userService.getUserByEmail(currentUser.getUsername());
         if (userByEmail.isPresent()) {
@@ -79,7 +81,7 @@ public class AdminEndpoint {
     }
 
     @PutMapping("/update/profile")
-    public ResponseEntity<?> updateSeller(@RequestBody UserUpdateDto userUpdateDto) {
+    public ResponseEntity<?> updateSeller(@Valid @RequestBody UserUpdateDto userUpdateDto) throws EntityNotFoundException {
         if (userUpdateDto.getId() != 0) {
 
             Optional<User> userByEmail = userService.getUserById(userUpdateDto.getId());
