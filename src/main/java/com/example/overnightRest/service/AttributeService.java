@@ -2,12 +2,9 @@ package com.example.overnightRest.service;
 
 
 import com.example.common.entity.Attribute;
-import com.example.common.entity.Region;
 import com.example.common.repository.AttributeRepository;
-import com.example.common.repository.RegionRepository;
 import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.mapper.AttributeMapper;
-import com.example.overnightRest.mapper.RegionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +17,16 @@ public class AttributeService {
 
     private final AttributeRepository attributeRepository;
 
-    private final AttributeMapper attributeMapper;
-
     public List<Attribute> getAll() {
         return attributeRepository.findAll();
     }
 
-    public Optional<Attribute> findById(int id) {
-        return attributeRepository.findById(id);
+    public Optional<Attribute> findById(int id) throws EntityNotFoundException {
+        Optional<Attribute> byId = attributeRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new EntityNotFoundException("Attribute whit id = " + id + " does not exists");
+        }
+        return byId;
     }
 
     public Optional<Attribute> findByName(String name) {
@@ -39,17 +38,17 @@ public class AttributeService {
     }
 
     public void update(Attribute attribute) throws EntityNotFoundException {
-        Optional<Attribute> byId = attributeRepository.findById(attribute.getId());
-        if (byId.isEmpty()) {
-            throw new EntityNotFoundException("Attribute whit id = " + attribute.getId()+ " does not exists");
-        }
+        final int id = attribute.getId();
+        attribute = attributeRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Attribute whit id = %s does not exists", id))
+        );
         attributeRepository.save(attribute);
     }
 
     public void deleteById(int id) throws EntityNotFoundException {
         Optional<Attribute> byId = attributeRepository.findById(id);
-        if(byId.isEmpty()){
-            throw new EntityNotFoundException("Attribute whit id = " + id+ " does not exists");
+        if (byId.isEmpty()) {
+            throw new EntityNotFoundException("Attribute whit id = " + id + " does not exists");
         }
         attributeRepository.deleteById(id);
     }

@@ -1,4 +1,4 @@
-package com.example.overnightRest.endpoint.AdminEndpoint;
+package com.example.overnightRest.endpoint.admin;
 
 import com.example.common.dto.AttributeCreateDto;
 import com.example.common.dto.AttributeDto;
@@ -35,7 +35,7 @@ public class AttributeEndpoint {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AttributeDto> getAttributeById(@PathVariable("id") int id) {
+    public ResponseEntity<AttributeDto> getAttributeById(@PathVariable("id") int id) throws EntityNotFoundException {
         Optional<Attribute> byId = attributeService.findById(id);
         if (byId.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -69,7 +69,7 @@ public class AttributeEndpoint {
             return ResponseEntity.badRequest().build();
         }
         attributeService.deleteById(id);
-        log.info("Attribute whit id = " + id + "  was removed by user " + currentUser.getUsername());
+        log.info("Attribute whit id = {}  was removed by user {}", id, currentUser.getUsername());
         return ResponseEntity.noContent().build();
     }
 }

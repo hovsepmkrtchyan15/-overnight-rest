@@ -39,3 +39,7 @@ logging:
   level:
     root: info
     com.example: info
+
+overnight:
+  images:
+    folder: C:\\Users\\Hoso\\IdeaProjects\\modular\\overnight-parent\\overnight-web\\images

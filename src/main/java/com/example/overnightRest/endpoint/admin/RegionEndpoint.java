@@ -1,8 +1,8 @@
-package com.example.overnightRest.endpoint.AdminEndpoint;
+package com.example.overnightRest.endpoint.admin;
 
-import com.example.common.entity.Region;
 import com.example.common.dto.RegionCreateDto;
 import com.example.common.dto.RegionDto;
+import com.example.common.entity.Region;
 import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.mapper.RegionMapper;
 import com.example.overnightRest.security.CurrentUser;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 
 import javax.validation.Valid;
 import java.util.List;
@@ -70,7 +69,7 @@ public class RegionEndpoint {
             return ResponseEntity.badRequest().build();
         }
         regionService.deleteById(id);
-        log.info("Region whit id = " + id + "  was removed by user " + currentUser.getUsername());
+        log.info("Region whit id = {} was removed by user {} ", id, currentUser.getUsername());
         return ResponseEntity.noContent().build();
     }
 }
