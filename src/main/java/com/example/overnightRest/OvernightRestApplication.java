@@ -10,6 +10,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.text.SimpleDateFormat;
+
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.example.overnightRest", "com.example.common.*"})
 @EntityScan(basePackages = "com.example.common.*")
@@ -20,6 +22,7 @@ public class OvernightRestApplication {
     public static void main(String[] args) {
         SpringApplication.run(OvernightRestApplication.class, args);
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

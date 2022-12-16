@@ -1,4 +1,4 @@
-package com.example.overnightRest.endpoint.ClientEndpoint;
+package com.example.overnightRest.endpoint.client;
 
 import com.example.common.dto.UserBookDto;
 import com.example.overnightRest.exception.EntityNotFoundException;
@@ -24,6 +24,7 @@ public class RatingEndpoint {
     @PutMapping("/rating")
     public ResponseEntity<?> changeRating(@Valid @RequestBody UserBookDto userBookDto) throws EntityNotFoundException {
         userBookService.changeRating(userBookDto);
+        log.info("Changing rating product id = {} from user id = {} ", userBookDto.getProduct().getId(), userBookDto.getUser().getId());
         return ResponseEntity.ok().build();
     }
 }

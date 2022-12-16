@@ -8,10 +8,14 @@ import com.example.common.repository.ProductRepository;
 import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SellerService {
 
+    @Value("${overnight.images.folder}")
+    private String folderPath;
     private final ProductRepository productRepository;
     private final CustomProductRepository customProductRepository;
 
@@ -51,4 +57,19 @@ public class SellerService {
     public List<Product> findProductsByFilter(ProductFilterDto productFilterDto) {
         return customProductRepository.products(productFilterDto);
     }
+
+    public void image(int id, MultipartFile file) throws EntityNotFoundException, IOException {
+        Optional<Product> byId = productRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new EntityNotFoundException("Product whit id = " + id + " does not exists");
+        }
+        if (!file.isEmpty() && file.getSize() > 0) {
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            File newFile = new File(folderPath + File.separator + fileName);
+            file.transferTo(newFile);
+            byId.get().setPicUrl(fileName);
+            productRepository.save(byId.get());
+        }
+    }
 }
+

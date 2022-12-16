@@ -1,6 +1,6 @@
 package com.example.overnightRest.exception;
 
-public class EntityNotFoundException extends Exception{
+public class EntityNotFoundException extends Exception {
     public EntityNotFoundException() {
     }
 

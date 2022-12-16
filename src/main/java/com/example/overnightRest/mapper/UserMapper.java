@@ -15,6 +15,7 @@ import java.util.List;
 public interface UserMapper {
 
     User map(UserResponseDto userResponseDto);
+
     User map(UserRoleDto userRoleDto);
 
     UserResponseDto map(User user);
@@ -22,11 +23,9 @@ public interface UserMapper {
     List<UserResponseDto> map(List<User> userList);
 
     UserResponseDto map(UserStatusDto userStatusDto);
+
     User map(UserUpdateDto userUpdateDto);
+
     User mao(UserStatusDto userStatusDto);
-
-
-
-
 
 }

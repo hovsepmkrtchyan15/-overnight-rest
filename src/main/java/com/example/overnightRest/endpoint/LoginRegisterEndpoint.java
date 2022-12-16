@@ -1,10 +1,10 @@
 package com.example.overnightRest.endpoint;
 
-import com.example.common.entity.User;
 import com.example.common.dto.UserAuthDto;
 import com.example.common.dto.UserAuthResponseDto;
 import com.example.common.dto.UserRegisterDto;
 import com.example.common.dto.UserResponseDto;
+import com.example.common.entity.User;
 import com.example.overnightRest.mapper.RegisterUserMapper;
 import com.example.overnightRest.mapper.UserMapper;
 import com.example.overnightRest.service.UserService;
@@ -38,7 +38,9 @@ public class LoginRegisterEndpoint {
     public ResponseEntity<?> auth(@Valid @RequestBody UserAuthDto userAuthDto) {
         Optional<User> byEmail = userService.findByAuthEmail(userAuthDto);
         if (byEmail.isPresent()) {
+            log.info("User with email: {} is found", userAuthDto.getEmail());
             if (passwordEncoder.matches(userAuthDto.getPassword(), byEmail.get().getPassword())) {
+                log.info("Passwords are matched for user with email: {}", userAuthDto.getEmail());
                 return ResponseEntity.ok(UserAuthResponseDto.builder()
                         .token(jwtTokenUtil.generateToken(byEmail.get().getEmail()))
                         .user(userMapper.map(byEmail.get()))
@@ -55,7 +57,7 @@ public class LoginRegisterEndpoint {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         User user = userService.save(registerUserMapper.map(userRegisterDto));
-        log.info("User with email " + user.getEmail() + " saved");
+        log.info("User with email {}  saved", user.getEmail());
         return ResponseEntity.ok(userMapper.map(user));
     }
 }

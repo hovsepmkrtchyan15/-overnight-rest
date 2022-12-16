@@ -1,9 +1,6 @@
-package com.example.overnightRest.endpoint.AdminEndpoint;
+package com.example.overnightRest.endpoint.admin;
 
-import com.example.common.dto.PasswordCheckDto;
-import com.example.common.dto.ProductFilterDto;
-import com.example.common.dto.UserStatusDto;
-import com.example.common.dto.UserUpdateDto;
+import com.example.common.dto.*;
 import com.example.common.entity.Product;
 import com.example.common.entity.RoleUser;
 import com.example.common.entity.User;
@@ -12,6 +9,7 @@ import com.example.overnightRest.mapper.UserMapper;
 import com.example.overnightRest.security.CurrentUser;
 import com.example.overnightRest.service.SellerService;
 import com.example.overnightRest.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -38,14 +36,13 @@ public class AdminEndpoint {
     private final SellerService sellerService;
 
     @GetMapping("/users")
-    public ResponseEntity<Page<User>> adminPage(@PageableDefault(size = 20) Pageable pageable,
-                                                @Valid @RequestParam("RoleUser") RoleUser role) {
-
-        Page<User> users = userService.findUsersByUserRole(role, pageable);
-        return ResponseEntity.ok(users);
+    public Page<UserResponseDto> adminPage(@PageableDefault(size = 20) Pageable pageable,
+                                           @Valid @RequestParam("role") RoleUser role) {
+        return userService.findUsersByUserRole(role, pageable);
     }
 
     @GetMapping("/products")
+    @Operation(summary = "Some summary")
     public ResponseEntity<List<Product>> sellerProducts(@Valid @RequestBody ProductFilterDto productFilterDto) {
         List<Product> products = sellerService.findProductsByFilter(productFilterDto);
         return ResponseEntity.ok(products);
@@ -58,7 +55,7 @@ public class AdminEndpoint {
             return ResponseEntity.badRequest().build();
         }
         userService.update(userMapper.mao(userStatusDto));
-        log.info("Update status for seller id =" + userStatusDto.getId() + " /new status = " + userStatusDto.getStatus());
+        log.info("Update status for seller id = {}  /new status {} ", userStatusDto.getId(), userStatusDto.getStatus());
         return ResponseEntity.ok().build();
     }
 
@@ -87,7 +84,7 @@ public class AdminEndpoint {
             Optional<User> userByEmail = userService.getUserById(userUpdateDto.getId());
             if (userByEmail.isPresent()) {
                 userService.update(userByEmail.get());
-                log.info("Update profile user for  id = " + userUpdateDto.getId());
+                log.info("Update profile user for  id = {} ", userUpdateDto.getId());
                 return ResponseEntity.ok(userUpdateDto);
             }
         }

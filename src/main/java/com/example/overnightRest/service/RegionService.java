@@ -16,7 +16,6 @@ import java.util.Optional;
 public class RegionService {
 
     private final RegionRepository regionRepository;
-    private final RegionMapper regionMapper;
 
     public List<Region> getAll() {
         return regionRepository.findAll();
