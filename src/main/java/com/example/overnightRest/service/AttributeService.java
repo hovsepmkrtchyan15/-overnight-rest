@@ -21,6 +21,11 @@ public class AttributeService {
         return attributeRepository.findAll();
     }
 
+    /**
+     * @param id for find attribute
+     * @return Searched attribute
+     * @throws EntityNotFoundException ExceptionHandler
+     */
     public Optional<Attribute> findById(int id) throws EntityNotFoundException {
         Optional<Attribute> byId = attributeRepository.findById(id);
         if (byId.isEmpty()) {
@@ -29,6 +34,11 @@ public class AttributeService {
         return byId;
     }
 
+    /**
+     *
+     * @param name Attribute name by search
+     * @return Searched attribute
+     */
     public Optional<Attribute> findByName(String name) {
         return attributeRepository.findByName(name);
     }

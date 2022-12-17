@@ -42,7 +42,7 @@ public class ProductEndpoint {
 
     @GetMapping("/products")
     public ResponseEntity<Page<Product>> sellerProducts(@PageableDefault(size = 20) Pageable pageable,
-                                                        @AuthenticationPrincipal CurrentUser currentUser) {
+                                                        @AuthenticationPrincipal CurrentUser currentUser) throws EntityNotFoundException {
 
         Page<Product> products = sellerService.findProductsBySellerEmail(currentUser, pageable);
         return ResponseEntity.ok(products);

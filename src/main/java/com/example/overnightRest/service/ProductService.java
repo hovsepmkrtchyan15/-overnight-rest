@@ -13,6 +13,10 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
 
+    /**
+     *
+     * @return top ten products by rating
+     */
     public List<Product> findTopTen() {
         return productRepository.findTopTen();
     }

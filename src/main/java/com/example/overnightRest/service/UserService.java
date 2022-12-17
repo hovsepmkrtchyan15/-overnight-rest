@@ -38,8 +38,8 @@ public class UserService {
     }
 
     /**
-     * @param user
-     * @return
+     * @param user User user
+     * @return saved user
      */
     public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -60,6 +60,11 @@ public class UserService {
         return new PageImpl<>(userResponseDtos, pageable, userResponseDtos.size());
     }
 
+    /**
+     *
+     * @param user User user
+     * @throws EntityNotFoundException ExceptionHandler
+     */
     public void update(User user) throws EntityNotFoundException {
         Optional<User> byId = userRepository.findById(user.getId());
         if (byId.isEmpty()) {
@@ -82,6 +87,11 @@ public class UserService {
 
     }
 
+    /**
+     * @param id for find user
+     * @return searched user
+     * @throws EntityNotFoundException ExceptionHandler
+     */
     public Optional<User> getUserById(int id) throws EntityNotFoundException {
         Optional<User> byId = userRepository.findById(id);
         if (byId.isEmpty()) {

@@ -14,6 +14,12 @@ public class MailService {
 
     private final MailSender mailSend;
 
+    /**
+     *
+     * @param to
+     * @param subject
+     * @param text
+     */
     @Async
     public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();

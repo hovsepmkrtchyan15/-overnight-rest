@@ -28,10 +28,18 @@ public class SellerService {
     private final ProductRepository productRepository;
     private final CustomProductRepository customProductRepository;
 
-
-    public Page<Product> findProductsBySellerEmail(CurrentUser currentUser, Pageable pageable) {
-
-        return productRepository.findProductsByUserId(currentUser.getUser().getId(), pageable);
+    /**
+     *
+     * @param currentUser CurrentUser currentUser
+     * @param pageable Pageable pageable
+     * @return searched products pageable
+     */
+    public Page<Product> findProductsBySellerEmail(CurrentUser currentUser, Pageable pageable) throws EntityNotFoundException {
+        Page<Product> productsByUserEmail = productRepository.findProductsByUserEmail(currentUser.getUser().getEmail(), pageable);
+        if(productsByUserEmail.getContent().isEmpty()){
+            throw new EntityNotFoundException("Seller email " + currentUser.getUsername() + " does not products");
+        }
+        return productsByUserEmail ;
     }
 
     public Optional<Product> findByName(String name) {
@@ -54,10 +62,22 @@ public class SellerService {
         productRepository.deleteById(id);
     }
 
+    /**
+     *
+     * @param productFilterDto filter by queryDsl
+     * @return Products by filter
+     */
     public List<Product> findProductsByFilter(ProductFilterDto productFilterDto) {
         return customProductRepository.products(productFilterDto);
     }
 
+    /**
+     *
+     * @param id Product ID
+     * @param file Image for upload
+     * @throws EntityNotFoundException ExceptionHandler
+     * @throws IOException
+     */
     public void image(int id, MultipartFile file) throws EntityNotFoundException, IOException {
         Optional<Product> byId = productRepository.findById(id);
         if (byId.isEmpty()) {

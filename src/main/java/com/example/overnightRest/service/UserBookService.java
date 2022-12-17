@@ -10,19 +10,15 @@ import com.example.common.repository.ProductRepository;
 import com.example.common.repository.UserBookRepository;
 import com.example.overnightRest.exception.EntityNotFoundException;
 import com.example.overnightRest.mapper.UserBookMapper;
-import com.example.overnightRest.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.overnightRest.util.DateUtil.simpleDateFormat;
+import static com.example.overnightRest.util.DateUtil.stringToDate;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +28,11 @@ public class UserBookService {
     private final ProductRepository productRepository;
     private final UserBookMapper userBookMapper;
 
-
+    /**
+     *
+     * @param userBookDto UserBookDto{User, Product, rating}
+     * @throws EntityNotFoundException ExceptionHandler
+     */
     public void changeRating(UserBookDto userBookDto) throws EntityNotFoundException {
         Optional<UserBook> userBook = userBookRepository.findUserBooksByUserIdAndProductId(userBookDto.getUser().getId(), userBookDto.getProduct().getId());
         if (userBook.isEmpty()) {
@@ -51,17 +51,18 @@ public class UserBookService {
         log.info("Rating product id = {} was updated by a client email = {}", byId.get().getId(), userBook.get().getUser().getEmail());
     }
 
+    /**
+     *
+     * @param userBookOrderDto UserBookOrderDto{Product, User, start and end dates}
+     * @return UserBook userBook
+     * @throws EntityNotFoundException ExceptionHandler
+     */
     public UserBookOrderSaveDto booking(UserBookOrderDto userBookOrderDto) throws EntityNotFoundException {
-        Date from = null;
-        Date to = null;
-        try {
-            from = simpleDateFormat.parse(userBookOrderDto.getStartDate());
-            to = simpleDateFormat.parse(userBookOrderDto.getEndDate());
-        } catch (ParseException e) {
-            log.error("Error parsing date. message: {}", e.getMessage());
-        }
+
+        Date from = stringToDate(userBookOrderDto.getStartDate());
+        Date to = stringToDate(userBookOrderDto.getStartDate());
         Optional<List<UserBook>> userBookOrders = userBookRepository.findUserBookOrders(from, to);
-        if (userBookOrders.isPresent() && userBookOrders.get().size()!=0) {
+        if (userBookOrders.isPresent() && userBookOrders.get().size() != 0) {
             throw new EntityNotFoundException("busy on the indicated dates");
         }
         UserBook userBook = UserBook.builder()

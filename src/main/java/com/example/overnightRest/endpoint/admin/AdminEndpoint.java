@@ -9,7 +9,6 @@ import com.example.overnightRest.mapper.UserMapper;
 import com.example.overnightRest.security.CurrentUser;
 import com.example.overnightRest.service.SellerService;
 import com.example.overnightRest.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -42,12 +41,10 @@ public class AdminEndpoint {
     }
 
     @GetMapping("/products")
-    @Operation(summary = "Some summary")
     public ResponseEntity<List<Product>> sellerProducts(@Valid @RequestBody ProductFilterDto productFilterDto) {
         List<Product> products = sellerService.findProductsByFilter(productFilterDto);
         return ResponseEntity.ok(products);
     }
-
 
     @PutMapping("/update/seller")
     public ResponseEntity<?> updateSeller(@Valid @RequestBody UserStatusDto userStatusDto) throws EntityNotFoundException {

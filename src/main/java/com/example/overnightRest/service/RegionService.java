@@ -1,6 +1,7 @@
 package com.example.overnightRest.service;
 
 
+import com.example.common.entity.Attribute;
 import com.example.common.entity.Region;
 import com.example.common.repository.RegionRepository;
 import com.example.overnightRest.exception.EntityNotFoundException;
@@ -21,8 +22,12 @@ public class RegionService {
         return regionRepository.findAll();
     }
 
-    public Optional<Region> findById(int id) {
-        return regionRepository.findById(id);
+    public Optional<Region> findById(int id) throws EntityNotFoundException {
+        Optional<Region> byId = regionRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new EntityNotFoundException("Region whit id = " + id + " does not exists");
+        }
+        return byId;
     }
 
     public Optional<Region> findByName(String name) {
@@ -33,6 +38,11 @@ public class RegionService {
         regionRepository.save(region);
     }
 
+    /**
+     *
+     * @param region Region region
+     * @throws EntityNotFoundException ExceptionHandler
+     */
     public void update(Region region) throws EntityNotFoundException {
         Optional<Region> byId = regionRepository.findById(region.getId());
         if (byId.isEmpty()) {
@@ -41,6 +51,11 @@ public class RegionService {
         regionRepository.save(region);
     }
 
+    /**
+     *
+     * @param id Id region for delete
+     * @throws EntityNotFoundException ExceptionHandler
+     */
     public void deleteById(int id) throws EntityNotFoundException {
         Optional<Region> byId = regionRepository.findById(id);
         if (byId.isEmpty()) {

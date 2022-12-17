@@ -34,10 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/sellers").hasAuthority(RoleUser.ADMIN.name())
-//                .antMatchers("/products").hasAuthority(Role.USER.name())
-//                .antMatchers("/products/update").hasAuthority(Role.USER.name())
-//                .antMatchers("/products/delete").hasAuthority(Role.USER.name())
+                .antMatchers("/admin/*").hasAuthority(RoleUser.ADMIN.name())
+                .antMatchers("/seller/*").hasAuthority(RoleUser.SELLER.name())
+                .antMatchers("/client/rating").hasAuthority(RoleUser.CLIENT.name())
+                .antMatchers("/client/booking").hasAuthority(RoleUser.CLIENT.name())
 
                 .anyRequest().permitAll();
 

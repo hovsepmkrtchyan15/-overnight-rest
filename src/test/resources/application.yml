@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+
+  mail:
+    host: smtp.gmail.com
+    username: poxospoxosyan1985@gmail.com
+    password: tiqhyxcvmeiqiohe
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+
+server:
+  port: 8081
+
+jwt:
+  secret: 55644fgf$%&jh
+  expiration: 450000
+
+logging:
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz # by date
+      max-file-size: 10MB # by size
+  file:
+    name: C:\Users\Hoso\IdeaProjects\modular\overnight-parent\log\application.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level  %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss}  %-5level %logger{36} - %msg%n"
+  level:
+    root: info
+    com.example: info
+
+overnight:
+  images:
+    folder: C:\\Users\\Hoso\\IdeaProjects\\modular\\overnight-parent\\overnight-web\\images
