@@ -35,7 +35,7 @@ public class RegionEndpoint {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RegionDto> getRegionById(@PathVariable("id") int id) {
+    public ResponseEntity<RegionDto> getRegionById(@PathVariable("id") int id) throws EntityNotFoundException {
         Optional<Region> byId = regionService.findById(id);
         if (byId.isEmpty()) {
             return ResponseEntity.notFound().build();

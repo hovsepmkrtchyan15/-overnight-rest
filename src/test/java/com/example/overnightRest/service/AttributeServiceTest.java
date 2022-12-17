@@ -66,6 +66,25 @@ public class AttributeServiceTest {
         assertThrows(EntityNotFoundException.class, () -> {
             attributeService.findById(id);
         });
+    }
 
+    @Test
+    void deleteById() throws EntityNotFoundException {
+        Attribute attribute = Attribute.builder()
+                .id(2)
+                .name("WiFi")
+                .build();
+        when(attributeRepository.findById(any())).thenReturn(Optional.ofNullable(attribute));
+
+        attributeService.deleteById(2);
+        verify(attributeRepository, times(1)).deleteById(2);
+    }
+
+    @Test
+    void deleteByIdNull()  {
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            attributeService.findById(0);
+        });
     }
 }

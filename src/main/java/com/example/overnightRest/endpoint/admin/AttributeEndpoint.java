@@ -27,7 +27,6 @@ public class AttributeEndpoint {
     private final AttributeService attributeService;
     private final AttributeMapper attributeMapper;
 
-
     @GetMapping("")
     public ResponseEntity<List<AttributeDto>> getAttributes() {
         List<Attribute> allAttributes = attributeService.getAll();
